@@ -13,13 +13,15 @@ assumes the GCC compiler, however you may substitute an equivalent C++ compiler
 by adjusting the `make` script as needed. Execute the make script, then run the
 compiled executable.
 
-If the code fails to compile, the execute won't be created or will remain the
-last-compiled version. Adjust your code to resolve compiler errors and try again.
-
 ``` shell
 $ ./make
 $ ./compiled
 ```
+
+# Building with cmake
+* Run build.bat
+* Run start_soln.bat
+
 
 ## Project TODO List:
 - Complete `Pointer` constructor
