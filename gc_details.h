@@ -4,30 +4,46 @@
 template <class T>
 class PtrDetails
 {
-  public:
-    unsigned refcount; // current reference count
-    T *memPtr;         // pointer to allocated memory
-    /* isArray is true if memPtr points
-to an allocated array. It is false
-otherwise. */
-    bool isArray; // true if pointing to array
-    /* If memPtr is pointing to an allocated
-array, then arraySize contains its size */
-    unsigned arraySize; // size of array
-    // Here, mPtr points to the allocated memory.
-    // If this is an array, then size specifies
-    // the size of the array.
+public:
+    unsigned refcount;       // current reference count
+    T *memPtr;               // pointer to allocated memory 
+    bool isArray;            // true if memPtr points to an allocated array
+    unsigned arraySize;      // contains size of array memPtr is pointing to an allocated array.
 
-    PtrDetails(void)
+    // Here, mPtr points to the allocated memory.    
+    PtrDetails(T *ptr, int array_size)
     {
-        // TODO: Implement PtrDetails
+        // DONE: Implement PtrDetails
+        refcount = 1;        
+        memPtr = ptr;
+        arraySize = array_size;
+        if (arraySize > 0)
+        {
+            isArray = true;
+        }
+        else
+        {
+            isArray = false;
+        }
     }
 };
+
 // Overloading operator== allows two class objects to be compared.
-// This is needed by the STL list class.
 template <class T>
-bool operator==(const PtrDetails<T> &ob1,
-                const PtrDetails<T> &ob2)
+bool operator==(const PtrDetails<T> &obj1, const PtrDetails<T> &obj2)
 {
-    // TODO: Implement operator==
+    // DONE: Implement operator==
+    if (obj1.memPtr == obj2.memPtr)
+    {
+        //check if the member variables are also matching
+        if ((obj1.isArray != obj2.isArray) || (obj1.arraySize != obj2.arraySize))
+        {
+            throw std::runtime_error("Object members do not match..!");
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.15)
+project( CppND-Garbage-Collector-master )
+file(GLOB SRC
+    "*.h"
+    "*.cpp"
+)
+add_executable(CppND-Garbage-Collector-master ${SRC})
+
+#find_package( OpenCV REQUIRED )
+#include_directories( ${OpenCV_INCLUDE_DIRS} )
+#target_link_libraries( AStar ${OpenCV_LIBS} )
