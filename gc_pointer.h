@@ -15,83 +15,89 @@
 template <class T, int size = 0>
 class Pointer{
 private:
-    // refContainer maintains the garbage collection list.
-    static std::list<PtrDetails<T> > refContainer;
-    // addr points to the allocated memory to which
-    // this Pointer pointer currently points.
-    T *addr;
-    /*  isArray is true if this Pointer points
-        to an allocated array. It is false
-        otherwise.
-        */
-    bool isArray;
-    // true if pointing to array
-    // If this Pointer is pointing to an allocated
-    // array, then arraySize contains its size.
-    unsigned arraySize; // size of the array
-    static bool first; // true when first Pointer is created
-    // Return an iterator to pointer details in refContainer.
-    typename std::list<PtrDetails<T> >::iterator findPtrInfo(T *ptr);
+    static std::list<PtrDetails<T> > refContainer;                        // refContainer maintains the garbage collection list.    
+    T *addr;                                                              // addr points to the allocated memory        
+    bool isArray;                                                         // isArray is true if this Pointer points to an allocated array. It is false otherwise.    
+    unsigned arraySize;                                                   // size of the array
+    static bool first;                                                    // true when first Pointer is created    
+    typename std::list<PtrDetails<T> >::iterator findPtrInfo(T *ptr);     // Return an iterator to pointer details in refContainer.
 
 public:
-    // Define an iterator type for Pointer<T>.
-    typedef Iter<T> GCiterator;
+
+    typedef Iter<T> GCiterator;                                           // Define an iterator type for Pointer<T>.
     // Empty constructor
-    // NOTE: templates aren't able to have prototypes with default arguments
-    // this is why constructor is designed like this:
-    Pointer()
-    {
-        Pointer(NULL);
-    }
+    // NOTE: templates aren't able to have prototypes with default arguments, this is why constructor is designed like this:
+    Pointer()  { Pointer(NULL); }
     Pointer(T*);
+
     // Copy constructor.
     Pointer(const Pointer &);
+
     // Destructor for Pointer.
     ~Pointer();
-    // Collect garbage. Returns true if at least
-    // one object was freed.
+
+    // Collect garbage. Returns true if at least one object was freed.
     static bool collect();
+
     // Overload assignment of pointer to Pointer.
     T *operator=(T *t);
+
     // Overload assignment of Pointer to Pointer.
     Pointer &operator=(Pointer &rv);
-    // Return a reference to the object pointed
-    // to by this Pointer.
+
+    // Return a reference to the object pointed to by this Pointer.
     T &operator*()
     {
         return *addr;
     }
+
     // Return the address being pointed to.
     T *operator->() { return addr; }
-    // Return a reference to the object at the
-    // index specified by i.
+
+    // Return a reference to the object at the index specified by i.
     T &operator[](int i){ return addr[i]; }
+
     // Conversion function to T *.
     operator T *() { return addr; }
+
     // Return an Iter to the start of the allocated memory.
     Iter<T> begin()
     {
         int _size;
         if (isArray)
+        {
             _size = arraySize;
+        }
         else
+        {
             _size = 1;
+        }
+
         return Iter<T>(addr, addr, addr + _size);
     }
+
     // Return an Iter to one past the end of an allocated array.
     Iter<T> end()
     {
         int _size;
         if (isArray)
+        {
             _size = arraySize;
+        }
         else
+        {
             _size = 1;
+        }
+
         return Iter<T>(addr + _size, addr, addr + _size);
     }
+
     // Return the size of refContainer for this type of Pointer.
     static int refContainerSize() { return refContainer.size(); }
+
     // A utility function that displays refContainer.
     static void showlist();
+
     // Clear refContainer when program exits.
     static void shutdown();
 };
@@ -100,6 +106,7 @@ public:
 // Creates storage for the static variables
 template <class T, int size>
 std::list<PtrDetails<T> > Pointer<T, size>::refContainer;
+
 template <class T, int size>
 bool Pointer<T, size>::first = true;
 
@@ -109,12 +116,38 @@ Pointer<T, size>::Pointer(T *t)
 {
     // Register shutdown() as an exit function.
     if (first)
+    {
         atexit(shutdown);
+    }
     first = false;
 
-    // TODO: Implement Pointer constructor
-    // Lab: Smart Pointer Project Lab
+    // DONE: Implement Pointer constructor   
 
+    // find if the input pointer (*t) is inside the refContainer
+    std::list<PtrDetails<T> >::iterator p;
+    p = findPtrInfo(t);
+
+    // increment ref count if *t is already in the refContainer. Otherwise, add it to the list.
+    if (p != refContainer.end())
+    {
+        p->refcount++;
+    }
+    else 
+    {       
+        PtrDetails<T> gc_obj(t, size);  // Create and store this entry. 
+        refContainer.push_front(gc_obj);
+    }
+
+    addr = t;
+    arraySize = size;
+    if (size > 0) 
+    {
+        isArray = true;
+    }
+    else
+    {
+        isArray = false;
+    }
 }
 
 // Copy constructor.
@@ -136,8 +169,7 @@ Pointer<T, size>::~Pointer()
     // Lab: New and Delete Project Lab
 }
 
-// Collect garbage. Returns true if at least
-// one object was freed.
+// Collect garbage. Returns true if at least one object was freed.
 template <class T, int size>
 bool Pointer<T, size>::collect()
 {
@@ -194,8 +226,7 @@ void Pointer<T, size>::showlist()
 
 // Find a pointer in refContainer.
 template <class T, int size>
-typename std::list<PtrDetails<T> >::iterator
-Pointer<T, size>::findPtrInfo(T *ptr)
+typename std::list<PtrDetails<T> >::iterator Pointer<T, size>::findPtrInfo(T *ptr)
 {
     typename std::list<PtrDetails<T> >::iterator p;
     // Find ptr in refContainer.
