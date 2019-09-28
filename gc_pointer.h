@@ -124,7 +124,7 @@ Pointer<T, size>::Pointer(T *t)
     // DONE: Implement Pointer constructor   
 
     // find if the input pointer (*t) is inside the refContainer
-    std::list<PtrDetails<T> >::iterator p;
+    typename std::list<PtrDetails<T> >::iterator p;
     p = findPtrInfo(t);
 
     // increment ref count if *t is already in the refContainer. Otherwise, add it to the list.
@@ -155,7 +155,7 @@ template< class T, int size>
 Pointer<T, size>::Pointer(const Pointer &ob)
 {
     // DONE: Implement Pointer constructor
-    std::list<PtrDetails<T>>::iterator p;
+    typename std::list<PtrDetails<T>>::iterator p;
     p = findPtrInfo(ob.addr);
     p->refcount++; // increment ref count
     addr = ob.addr;
@@ -176,7 +176,7 @@ template <class T, int size>
 Pointer<T, size>::~Pointer()
 {
     // DONE: Implement Pointer destructor
-    std::list<PtrDetails<T>>::iterator p;
+    typename std::list<PtrDetails<T>>::iterator p;
     p = findPtrInfo(addr);
     if (p->refcount)
     {
@@ -240,7 +240,7 @@ T *Pointer<T, size>::operator=(T *t)
     // DONE: Implement operator==
 
     //step 1: find the current address and decrement its refcount.
-    std::list<PtrDetails<T>>::iterator p;
+    typename std::list<PtrDetails<T>>::iterator p;
     p = findPtrInfo(addr);
     p->refcount--;
 
@@ -267,7 +267,7 @@ Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv)
     // DONE: Implement operator==
 
     //step 1: find the current address and decrement its refcount.
-    std::list<PtrDetails<T>>::iterator p;
+    typename std::list<PtrDetails<T>>::iterator p;
     p = findPtrInfo(addr);
     p->refcount--;
 
