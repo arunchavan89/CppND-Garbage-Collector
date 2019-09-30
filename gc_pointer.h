@@ -13,7 +13,7 @@
     specify the array size.
     */
 template <class T, int size = 0>
-class Pointer{
+class Pointer {
 private:
     static std::list<PtrDetails<T> > refContainer;                        // refContainer maintains the garbage collection list.    
     T *addr;                                                              // addr points to the allocated memory        
@@ -28,7 +28,7 @@ public:
     // Empty constructor
     // NOTE: templates aren't able to have prototypes with default arguments, this is why constructor is designed like this:
     //Pointer()  { Pointer(NULL); }
-    Pointer(T* t=NULL);
+    Pointer(T* t = NULL);
 
     // Copy constructor.
     Pointer(const Pointer &);
@@ -55,7 +55,7 @@ public:
     T *operator->() { return addr; }
 
     // Return a reference to the object at the index specified by i.
-    T &operator[](int i){ return addr[i]; }
+    T &operator[](int i) { return addr[i]; }
 
     // Conversion function to T *.
     operator T *() { return addr; }
@@ -160,11 +160,11 @@ Pointer<T, size>::Pointer(const Pointer &ob)
     p->refcount++; // increment ref count
     addr = ob.addr;
     arraySize = ob.arraySize;
-    if (arraySize > 0) 
+    if (arraySize > 0)
     {
         isArray = true;
     }
-    else 
+    else
     {
         isArray = false;
     }
@@ -194,7 +194,7 @@ bool Pointer<T, size>::collect()
     // DONE: Implement collect function    
     bool memfreed = false;
     typename std::list<PtrDetails<T> >::iterator p;
-    do{
+    do {
         // Scan refContainer looking for unreferenced pointers.
         for (p = refContainer.begin(); p != refContainer.end(); p++)
         {
