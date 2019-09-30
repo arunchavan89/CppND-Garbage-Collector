@@ -11,13 +11,13 @@ public:
     unsigned arraySize;      // contains size of array memPtr is pointing to an allocated array.
 
     // Here, mPtr points to the allocated memory.    
-    PtrDetails(T *ptr, int array_size)
+    PtrDetails(T *ptr, unsigned array_size = 0)
     {
         // DONE: Implement PtrDetails
-        refcount = 1;        
+        refcount = 1;
         memPtr = ptr;
         arraySize = array_size;
-        if (arraySize > 0)
+        if (arraySize != 0)
         {
             isArray = true;
         }

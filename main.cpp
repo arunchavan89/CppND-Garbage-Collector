@@ -1,6 +1,5 @@
 #include "gc_pointer.h"
-//#include "LeakTester.h"
-#include <assert.h>
+#include "LeakTester.h"
 
 int main()
 {

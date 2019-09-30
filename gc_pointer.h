@@ -27,8 +27,8 @@ public:
     typedef Iter<T> GCiterator;                                           // Define an iterator type for Pointer<T>.
     // Empty constructor
     // NOTE: templates aren't able to have prototypes with default arguments, this is why constructor is designed like this:
-    Pointer()  { Pointer(NULL); }
-    Pointer(T*);
+    //Pointer()  { Pointer(NULL); }
+    Pointer(T* t=NULL);
 
     // Copy constructor.
     Pointer(const Pointer &);
@@ -112,7 +112,7 @@ bool Pointer<T, size>::first = true;
 
 // Constructor for both initialized and uninitialized objects. -> see class interface
 template<class T, int size>
-Pointer<T, size>::Pointer(T *t)
+Pointer<T, size>::Pointer(T *t = NULL)
 {
     // Register shutdown() as an exit function.
     if (first)
@@ -191,7 +191,6 @@ Pointer<T, size>::~Pointer()
 template <class T, int size>
 bool Pointer<T, size>::collect()
 {
-
     // DONE: Implement collect function    
     bool memfreed = false;
     typename std::list<PtrDetails<T> >::iterator p;
@@ -206,11 +205,12 @@ bool Pointer<T, size>::collect()
                 continue;
             }
 
-            // Remove unused entry from refContainer.
-            refContainer.remove(*p);
 
             //set memfreed to true
             memfreed = true;
+
+            // Remove unused entry from refContainer.
+            refContainer.remove(*p);
 
             // Free memory unless the Pointer is null.
             if (p->memPtr)
@@ -276,7 +276,7 @@ Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv)
     p->refcount++;
 
     addr = rv.addr;
-    return rv.addr;
+    return rv;
 
 }
 
