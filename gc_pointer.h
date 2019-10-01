@@ -112,7 +112,7 @@ bool Pointer<T, size>::first = true;
 
 // Constructor for both initialized and uninitialized objects. -> see class interface
 template<class T, int size>
-Pointer<T, size>::Pointer(T *t = NULL)
+Pointer<T, size>::Pointer(T *t)
 {
     // Register shutdown() as an exit function.
     if (first)

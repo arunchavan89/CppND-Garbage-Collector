@@ -23,13 +23,13 @@ class Iter
     T *begin;              // points to start of allocated array
     unsigned length;       // length of sequence
 
-  public:
+public:
     Iter()
     {
         ptr = end = begin = NULL;
         length = 0;
     }
-    
+
     Iter(T *p, T *first, T *last)
     {
         ptr = p;
