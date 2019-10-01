@@ -26,3 +26,6 @@ $ ./compiled
 - Complete `Pointer` `operator==`
 - Complete `Pointer` destructor
 - Complete `PtrDetails` class
+
+## Results:
+![Alt text](result.png)
